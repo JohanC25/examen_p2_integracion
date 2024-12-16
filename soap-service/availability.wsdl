@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="AvailabilityService"
+    targetNamespace="http://example.com/availability"
+    xmlns:tns="http://example.com/availability"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <types>
+        <xsd:schema targetNamespace="http://example.com/availability">
+            <xsd:element name="checkAvailabilityRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="startDate" type="xsd:date"/>
+                        <xsd:element name="endDate" type="xsd:date"/>
+                        <xsd:element name="roomType" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="checkAvailabilityResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="rooms" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+    <message name="checkAvailabilityRequest">
+        <part name="parameters" element="tns:checkAvailabilityRequest"/>
+    </message>
+    <message name="checkAvailabilityResponse">
+        <part name="parameters" element="tns:checkAvailabilityResponse"/>
+    </message>
+
+    <portType name="AvailabilityPort">
+        <operation name="checkAvailability">
+            <input message="tns:checkAvailabilityRequest"/>
+            <output message="tns:checkAvailabilityResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="AvailabilityBinding" type="tns:AvailabilityPort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="checkAvailability">
+            <soap:operation soapAction="checkAvailability"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="AvailabilityService">
+        <port name="AvailabilityPort" binding="tns:AvailabilityBinding">
+            <soap:address location="http://localhost:3001/wsdl"/>
+        </port>
+    </service>
+</definitions>
